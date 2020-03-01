@@ -4,7 +4,7 @@ import pandas as pd
 import skimage
 
 from skimage.feature import hog
-
+from skimage import data, exposure
 
 class dataFormatter:
     def __init__(self, csv):
@@ -40,9 +40,13 @@ class dataFormatter:
         locations = ((10, 20),)
 
         for image in self.images:
-            features, hog_image = hog(image, orientations=8, pixels_per_cell=(16, 16),
-                                      cells_per_block=(1, 1), visualise=True)
+            features, hog_image = hog(image, orientations=8, pixels_per_cell=(8, 8),
+                                      cells_per_block=(2, 2), visualise=True)
             hog_features.append(features)
             hog_images.append(hog_image)
 
-        return hog_features, hog_image
+        return hog_features, hog_images
+
+
+
+
