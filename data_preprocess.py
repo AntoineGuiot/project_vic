@@ -26,8 +26,8 @@ class dataFormatter:
         hog_images = []
 
         for image in self.images:
-            features, hog_image = hog(image, orientations=8, pixels_per_cell=(16, 16),
-                                      cells_per_block=(1, 1), visualise=True)
+            features, hog_image = hog(image, orientations=8, pixels_per_cell=(5, 5),
+                                      cells_per_block=(2, 2), visualise=True)
             hog_features.append(features)
             hog_images.append(hog_image)
 
