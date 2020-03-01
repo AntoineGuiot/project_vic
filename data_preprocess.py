@@ -32,6 +32,12 @@ class dataFormatter:
 
         return hog_images
 
+    ## compute landmarks features
+
+    def compute_landmarks(self):
+        # TODO 
+        return
+
     def process_target(self):
         enc = OneHotEncoder(handle_unknown='ignore', sparse=False)
         emotion = enc.fit_transform(self.data.emotion.values.reshape(-1, 1))
