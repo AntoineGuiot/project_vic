@@ -9,6 +9,8 @@ from skimage import data, exposure
 
 from sklearn.preprocessing import OneHotEncoder
 
+predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
+
 
 class dataFormatter:
     def __init__(self, csv):
@@ -39,8 +41,8 @@ class dataFormatter:
         landmarks = []
         for image in self.images:
             face_rects = [dlib.rectangle(left=1, top=1, right=47, bottom=47)]
-            face_landmarks =np.matrix([[p.x, p.y] for p in predictor(image, face_rects[0]).parts()])
-            landmarks.append(face_landmarks)   
+            face_landmarks = np.matrix([[p.x, p.y] for p in predictor(image, face_rects[0]).parts()])
+            landmarks.append(face_landmarks)
         self.data['landmarks'] = landmarks
         return landmarks
 
