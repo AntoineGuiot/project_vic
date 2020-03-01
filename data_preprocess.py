@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import pandas as pd
 import skimage
+import dlib
 
 from skimage.feature import hog
 from skimage import data, exposure
@@ -35,8 +36,13 @@ class dataFormatter:
     ## compute landmarks features
 
     def compute_landmarks(self):
-        # TODO
-        return
+        landmarks = []
+        for image in self.images:
+            face_rects = [dlib.rectangle(left=1, top=1, right=47, bottom=47)]
+            face_landmarks =np.matrix([[p.x, p.y] for p in predictor(image, face_rects[0]).parts()])
+            landmarks.append(face_landmarks)   
+        self.data['landmarks'] = landmarks
+        return landmarks
 
     def process_target(self):
         enc = OneHotEncoder(handle_unknown='ignore', sparse=False)
