@@ -29,11 +29,16 @@ class Model:
                              gamma=self.hyperparameters['gamma'])
 
     def train(self, train_set):
-        self.model.fit(train_set[self.predictors], train_set[self.targets])
+        X = np.stack(train_set[self.predictors].values)
+        # np.stack(data_formatter.data['hog_features'].values).shape
+        print(X.shape)
+        Y = train_set['emotion'].values
+        self.model.fit(X, Y)
 
     def test(self, test_set):
-        prediction = self.predict(test_set[self.predictors])
-        return accuracy_score(test_set[self.targets], prediction)
+        X = np.stack(test_set[self.predictors].values)
+        prediction = self.predict(X)
+        return accuracy_score(test_set['emotion'], prediction)
 
     def predict(self, X):
         return self.model.predict(X)

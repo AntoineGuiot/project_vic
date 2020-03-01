@@ -23,8 +23,8 @@ class dataFormatter:
         hog_images = []
 
         for image in self.images:
-            features, hog_image = hog(image, orientations=8, pixels_per_cell=(8, 8),
-                                      cells_per_block=(2, 2), visualise=True)
+            features, hog_image = hog(image, orientations=8, pixels_per_cell=(16, 16),
+                                      cells_per_block=(1, 1), visualise=True)
             hog_features.append(features)
             hog_images.append(hog_image)
 
@@ -35,7 +35,7 @@ class dataFormatter:
     ## compute landmarks features
 
     def compute_landmarks(self):
-        # TODO 
+        # TODO
         return
 
     def process_target(self):
