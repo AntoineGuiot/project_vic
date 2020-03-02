@@ -29,6 +29,8 @@ class Model:
                              gamma=self.hyperparameters['gamma'])
 
     def train(self, train_set):
+        train_set = train_set.dropna()
+
         # X = np.stack(train_set[self.predictors].values)
         if self.predictors == "hog_and_landmark":
             hog_features = np.stack(train_set['hog_features'].values)
@@ -47,6 +49,11 @@ class Model:
 
         elif self.predictors == 'lbp':
             X = np.stack(train_set['lbp'].values)
+
+        elif self.predictors == 'hog_and_lbp':
+            lbp = np.stack(train_set['lbp'].values)
+            hog_features = np.stack(train_set['hog_features'].values)
+            X = np.concatenate((hog_features, lbp), axis=1)
 
         else:
             print("Error no good predictor")
@@ -74,6 +81,10 @@ class Model:
         elif self.predictors == 'lbp':
             X = np.stack(test_set['lbp'].values)
 
+        elif self.predictors == 'hog_and_lbp':
+            lbp = np.stack(test_set['lbp'].values)
+            hog_features = np.stack(test_set['hog_features'].values)
+            X = np.concatenate((hog_features, lbp), axis=1)
 
         # X = np.stack(test_set[self.predictors].values)
         prediction = self.predict(X)

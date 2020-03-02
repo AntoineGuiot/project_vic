@@ -51,7 +51,7 @@ class dataFormatter:
         radius = 1
         n_points = 8 * radius
         sub_region_size = 16
-        n_bins = 255
+        n_bins = 25
         lbp_hist_list = []
         for image in self.images:
             lbp_hist = []
@@ -68,7 +68,6 @@ class dataFormatter:
             lbp_hist_list.append(lbp_hist)
         self.data['lbp'] = lbp_hist_list
         self.data['is_lbp_nan'] = np.sum(np.stack(self.data.lbp.values), axis=1)
-        self.data = self.data.dropna()
         return lbp_hist_list
 
     def process_target(self):
