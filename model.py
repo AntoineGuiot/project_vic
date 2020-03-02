@@ -2,7 +2,7 @@ import sklearn
 import numpy as np
 import pandas as pd
 from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, f1_score
 
 
 class Model:
@@ -89,6 +89,32 @@ class Model:
         # X = np.stack(test_set[self.predictors].values)
         prediction = self.predict(X)
         return accuracy_score(test_set['emotion'], prediction)
+    def getF1Score(self, test_set):
+
+        if self.predictors == "hog_and_landmark":
+            hog_features = np.stack(test_set['hog_features'].values)
+            landmark_features = np.array([x.flatten() for x in test_set['landmarks']])
+            landmark_features = landmark_features.reshape((landmark_features.shape[0], landmark_features.shape[2]))
+            X = np.concatenate((hog_features, landmark_features), axis=1)
+        elif self.predictors == "landmark":
+            landmark_features = np.array([x.flatten() for x in test_set['landmarks']])
+            landmark_features = landmark_features.reshape((landmark_features.shape[0], landmark_features.shape[2]))
+            X = landmark_features
+        elif self.predictors == "hog_features":
+            hog_features = np.stack(test_set['hog_features'].values)
+            X = hog_features
+
+        elif self.predictors == 'lbp':
+            X = np.stack(test_set['lbp'].values)
+
+        elif self.predictors == 'hog_and_lbp':
+            lbp = np.stack(test_set['lbp'].values)
+            hog_features = np.stack(test_set['hog_features'].values)
+            X = np.concatenate((hog_features, lbp), axis=1)
+
+        # X = np.stack(test_set[self.predictors].values)
+        prediction = self.predict(X)
+        return f1_score(test_set['emotion'], prediction,average='macro')
 
     def predict(self, X):
         return self.model.predict(X)
