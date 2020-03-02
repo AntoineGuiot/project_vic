@@ -13,7 +13,6 @@ predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
 
 
 class dataFormatter:
-
     def __init__(self, csv):
         self.data = csv
         images = self.data.pixels.values
@@ -29,6 +28,7 @@ class dataFormatter:
         for image in self.images:
             features, hog_image = hog(image, orientations=8, pixels_per_cell=(8, 8),
                                       cells_per_block=(2, 2), visualise=True)
+
             hog_features.append(features)
             hog_images.append(hog_image)
 

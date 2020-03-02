@@ -29,14 +29,42 @@ class Model:
                              gamma=self.hyperparameters['gamma'])
 
     def train(self, train_set):
-        X = np.stack(train_set[self.predictors].values)
+        #X = np.stack(train_set[self.predictors].values)
+        if self.predictors=="hog_and_landmark":
+            hog_features = np.stack(train_set['hog_features'].values)
+            landmark_features=np.array([x.flatten() for x in train_set['landmarks']])
+            landmark_features=landmark_features.reshape((landmark_features.shape[0],landmark_features.shape[2]))
+            X=np.concatenate((hog_features,landmark_features),axis=1)
+        elif self.predictors=="landmark":
+            landmark_features=np.array([x.flatten() for x in train_set['landmarks']])
+            landmark_features=landmark_features.reshape((landmark_features.shape[0],landmark_features.shape[2]))
+            X=landmark_features
+        elif self.predictors=="hog_features":
+            hog_features = np.stack(train_set['hog_features'].values)
+            X=hog_features
+        else:
+            print("Error no good predictor")
+            return "Error no good predictor"
         # np.stack(data_formatter.data['hog_features'].values).shape
         print(X.shape)
         Y = train_set['emotion'].values
         self.model.fit(X, Y)
 
     def test(self, test_set):
-        X = np.stack(test_set[self.predictors].values)
+
+        if self.predictors=="hog_and_landmark":
+            hog_features = np.stack(test_set['hog_features'].values)
+            landmark_features=np.array([x.flatten() for x in test_set['landmarks']])
+            landmark_features=landmark_features.reshape((landmark_features.shape[0],landmark_features.shape[2]))
+            X=np.concatenate((hog_features,landmark_features),axis=1)
+        elif self.predictors=="landmark":
+            landmark_features=np.array([x.flatten() for x in test_set['landmarks']])
+            landmark_features=landmark_features.reshape((landmark_features.shape[0],landmark_features.shape[2]))
+            X=landmark_features
+        elif self.predictors=="hog_features":
+            hog_features = np.stack(test_set['hog_features'].values)
+            X=hog_features
+        #X = np.stack(test_set[self.predictors].values)
         prediction = self.predict(X)
         return accuracy_score(test_set['emotion'], prediction)
 
