@@ -51,7 +51,7 @@ class dataFormatter:
         radius = 1
         n_points = 8 * radius
         sub_region_size = 16
-        n_bins = 25
+        n_bins = 255
         lbp_hist_list = []
         for image in self.images:
             lbp_hist = []
