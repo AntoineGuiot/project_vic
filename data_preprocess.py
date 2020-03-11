@@ -22,12 +22,12 @@ class dataFormatter:
 
         self.images = images
 
-    def compute_hog(self):
+    def compute_hog(self, pix=8):
         hog_features = []
         hog_images = []
 
         for image in self.images:
-            features, hog_image = hog(image, orientations=8, pixels_per_cell=(8, 8),
+            features, hog_image = hog(image, orientations=8, pixels_per_cell=(pix, pix),
                                       cells_per_block=(2, 2), visualise=True)
             hog_features.append(features)
             hog_images.append(hog_image)
@@ -47,10 +47,10 @@ class dataFormatter:
         self.data['landmarks'] = landmarks
         return landmarks
 
-    def compute_lbp(self):
+    def compute_lbp(self, sub_region_size=16):
         radius = 1
         n_points = 8 * radius
-        sub_region_size = 16
+        # sub_region_size = 16
         n_bins = 255
         lbp_hist_list = []
         for image in self.images:
